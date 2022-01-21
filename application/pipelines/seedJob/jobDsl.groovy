@@ -37,6 +37,7 @@ def deploymentJobs = [
     "keycloak": ["artifactVersion":"No"],
     "kafka-topics": [],
     "hcx-registry": [],
+    "audit-indexer": [],
     "secor": ["autoTriggerPath":"build/secor"],
 ]
 def buildJobs = [
