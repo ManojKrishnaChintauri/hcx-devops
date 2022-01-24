@@ -16,6 +16,7 @@ def rootFolders = [
 ]
 def environments = [
     "dev",
+    "staging",
 ]
 def provisionJobs = [
     "kafka",
