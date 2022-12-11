@@ -1,5 +1,14 @@
 // vim: ft=groovy et ts=2 sw=2:
 
+def github_default_branch = input(
+  id: 'GITHUB_DEFAULT_BRANCH', // env variable from which you can access the value
+  message: 'Enter the Default branch of Github to use:',
+  ok: 'OK',
+  parameters: [
+    [$class: 'StringParameterDefinition', description: 'Enter the Default branch of Github to use:', name: 'github_default_branch']
+  ]
+)
+
 node('ansible') {
     ansiColor('xterm') {
       stage("Creating Jobs") {
@@ -7,7 +16,15 @@ node('ansible') {
             // Checking out public repo
             checkout scm
             shell 'printenv'
-            jobDsl targets: 'application/pipelines/seedJob/*.groovy'
+            jobDsl targets: 'application/pipelines/seedJob/*.groovy',
+                   additionalParameters: [
+                       environments: [
+                           "dev",
+                           "staging",
+                           "production"
+                           ],
+                        githubDefaultBranch: github_default_branch
+                    ]
           }
       }
     }

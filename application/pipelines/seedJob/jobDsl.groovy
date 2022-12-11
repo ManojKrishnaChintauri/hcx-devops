@@ -1,22 +1,24 @@
 // Ref source code / examples: https://github.com/jenkinsci/job-dsl-plugin/wiki/Tutorial---Using-the-Jenkins-Job-DSL
 // Ref groovy code syntax: https://riptutorial.com/groovy/example/18003/iterate-over-a-collection
 // Ref jobDSL doc: http://your_jenkins_ip:8080/plugin/job-dsl/api-viewer/index.html
+// Ref Passing variables: https://github.com/jenkinsci/job-dsl-plugin/wiki/User-Power-Moves#use-job-dsl-in-pipeline-scripts
 // Online playground: https://groovyide.com/playground
+
+// Variable value from JenkinsFile
+//
+// String githubDefaultBranch = "sprint-2"
+// String[] environments = [ "dev", "staging", ]
+// String githubDefaultBranch = params.default_branch
 
 String deployFolder = "deploy"
 String provisionFolder = "provision"
 String buildFolder = "build"
 String githubCredID = "github-cred"
-String githubDefaultBranch = "sprint-2"
 
 def rootFolders = [
     deployFolder,
     provisionFolder,
     buildFolder
-]
-def environments = [
-    "dev",
-    "staging",
 ]
 def provisionJobs = [
     "kafka",
