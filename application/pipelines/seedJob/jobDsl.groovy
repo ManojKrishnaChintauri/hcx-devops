@@ -9,62 +9,15 @@
 // String githubDefaultBranch = "sprint-2"
 // String[] environments = [ "dev", "staging", ]
 // String githubDefaultBranch = params.default_branch
-
-String deployFolder = "deploy"
-String provisionFolder = "provision"
-String buildFolder = "build"
-String githubCredID = "github-cred"
-
-def rootFolders = [
-    deployFolder,
-    provisionFolder,
-    buildFolder
-]
-def provisionJobs = [
-    "kafka",
-    "elasticsearch",
-    "redis"
-]
-def deploymentJobs = [
-    "hcx-api": ["autoTriggerPath":"build/hcx-api"],
-    "payer-api": [],
-    "api-gateway": [],
-    "provider-api": [],
-    "claimsjob": [],
-    "coverageeligibility": [],
-    "statusjob": [],
-    "searchjob": [],
-    "searchresponsejob": [],
-    "paymentsjob": [],
-    "preauthjob": [],
-    "keycloak": ["artifactVersion":"No"],
-    "kafka-topics": [],
-    "hcx-registry": [],
-    "audit-indexer": [],
-    "secor": ["autoTriggerPath":"build/secor"],
-]
-def buildJobs = [
-    "hcx-api": [
-        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
-        "scriptPath": "hcx-apis/Jenkinsfile"
-    ],
-    "api-gateway": [
-        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
-        "scriptPath": "api-gateway/Jenkinsfile"
-    ],
-    "pipeline-jobs": [
-        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
-        "scriptPath": "hcx-pipeline-jobs/Jenkinsfile"
-    ],
-    "hcx-registry": [
-        "repo": "https://github.com/shiva-rakshith/sunbird-rc-core-0.0.1",
-        "scriptPath": "java/registry/Jenkinsfile"
-    ],
-    "secor": [
-        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-devops",
-        "scriptPath": "application/pipelines/Build/Secor/Jenkinsfile"
-    ]
-]
+// String githubDefaultBranch: github_default_branch,
+// String deployFolder: deployFolder, 
+// String provisionFolder: provisionFolder, 
+// String buildFolder: buildFolder, 
+// String githubCredID: githubCredID, 
+// String[] rootFolders: rootFolders, 
+// String[] buildJobs: buildJobs,
+// String[] deploymentJobs: deploymentJobs,
+// String[] provisionJobs: provisionJobs,
 
 buildJobTemplate = {
         jobName,repo,jenkinsFilePath ->

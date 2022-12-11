@@ -1,8 +1,74 @@
 // vim: ft=groovy et ts=2 sw=2:
 
+def provisionJobs = [
+    "kafka",
+    "elasticsearch",
+    "redis"
+]
+
+def deploymentJobs = [
+    "hcx-api": ["autoTriggerPath":"build/hcx-api"],
+    "payer-api": [],
+    "api-gateway": [],
+    "provider-api": [],
+    "claimsjob": [],
+    "coverageeligibility": [],
+    "statusjob": [],
+    "searchjob": [],
+    "searchresponsejob": [],
+    "paymentsjob": [],
+    "preauthjob": [],
+    "keycloak": ["artifactVersion":"No"],
+    "kafka-topics": [],
+    "hcx-registry": [],
+    "audit-indexer": [],
+    "secor": ["autoTriggerPath":"build/secor"],
+]
+
+def buildJobs = [
+    "hcx-api": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
+        "scriptPath": "hcx-apis/Jenkinsfile"
+    ],
+    "api-gateway": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
+        "scriptPath": "api-gateway/Jenkinsfile"
+    ],
+    "pipeline-jobs": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-platform",
+        "scriptPath": "hcx-pipeline-jobs/Jenkinsfile"
+    ],
+    "hcx-registry": [
+        "repo": "https://github.com/shiva-rakshith/sunbird-rc-core-0.0.1",
+        "scriptPath": "java/registry/Jenkinsfile"
+    ],
+    "secor": [
+        "repo": "https://github.com/Swasth-Digital-Health-Foundation/hcx-devops",
+        "scriptPath": "application/pipelines/Build/Secor/Jenkinsfile"
+    ]
+]
+
+String[] environments = [
+   "dev",
+   "staging",
+   "production"
+]
+
+String deployFolder = "deploy"
+String provisionFolder = "provision"
+String buildFolder = "build"
+String githubCredID = "github-cred"
+String[] rootFolders = [
+    deployFolder,
+    provisionFolder,
+    buildFolder
+]
+
+boolean ignoreExisting = true // Skip existing jobs override
+
 def github_default_branch = input(
   id: 'GITHUB_DEFAULT_BRANCH', // env variable from which you can access the value
-  message: 'Enter the Default branch of Github to use:',
+  message: 'Enter the Default branch of Github to use for build and deplyment: ',
   ok: 'OK',
   parameters: [
     [$class: 'StringParameterDefinition', description: 'Enter the Default branch of Github to use:', name: 'github_default_branch']
@@ -17,14 +83,18 @@ node('ansible') {
             checkout scm
             shell 'printenv'
             jobDsl targets: 'application/pipelines/seedJob/*.groovy',
-                   ignoreExisting: true, // Skip existing jobs override
+                   ignoreExisting: ignoreExisting, // Skip existing jobs override
                    additionalParameters: [
-                       environments: [
-                           "dev",
-                           "staging",
-                           "production"
-                           ],
-                        githubDefaultBranch: github_default_branch
+                        githubDefaultBranch: github_default_branch,
+                        environments: environments,
+                        deployFolder: deployFolder, 
+                        provisionFolder: provisionFolder, 
+                        buildFolder: buildFolder, 
+                        githubCredID: githubCredID, 
+                        rootFolders: rootFolders, 
+                        buildJobs: buildJobs,
+                        deploymentJobs: deploymentJobs,
+                        provisionJobs: provisionJobs,
                     ]
           }
       }
