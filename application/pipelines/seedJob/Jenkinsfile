@@ -17,6 +17,7 @@ node('ansible') {
             checkout scm
             shell 'printenv'
             jobDsl targets: 'application/pipelines/seedJob/*.groovy',
+                   ignoreExisting: true, // Skip existing jobs override
                    additionalParameters: [
                        environments: [
                            "dev",
