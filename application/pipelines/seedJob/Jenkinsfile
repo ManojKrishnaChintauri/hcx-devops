@@ -60,7 +60,7 @@ String[] rootFolders = [
 
 boolean ignoreExisting = true // Skip existing jobs override
 
-def github_default_branch = input(
+def github_default_branch = params.github_default_branch ?: input(
   id: 'GITHUB_DEFAULT_BRANCH', // env variable from which you can access the value
   message: 'Enter the Default branch of Github to use for build and deplyment: ',
   ok: 'OK',
@@ -69,7 +69,7 @@ def github_default_branch = input(
   ]
 )
 
-def deployment_env = input(
+def deployment_env = params.deployment_env ?: input(
   id: 'DEPLOYMENT_ENV', // env variable from which you can access the value
   message: 'Comma separated environment names for jobs to be deployed. Eg dev,staging',
   ok: 'OK',
