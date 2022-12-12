@@ -48,12 +48,6 @@ def buildJobs = [
     ]
 ]
 
-String[] environments = [
-   "dev",
-   "staging",
-   "production"
-]
-
 String deployFolder = "deploy"
 String provisionFolder = "provision"
 String buildFolder = "build"
@@ -74,6 +68,16 @@ def github_default_branch = input(
     [$class: 'StringParameterDefinition', description: 'Enter the Default branch of Github to use:', name: 'github_default_branch']
   ]
 )
+
+def deployment_env = input(
+  id: 'DEPLOYMENT_ENV', // env variable from which you can access the value
+  message: 'Comma separated environment names for jobs to be deployed. Eg dev,staging',
+  ok: 'OK',
+  parameters: [
+    [$class: 'StringParameterDefinition', description: 'Comma separated environment names for jobs to be deployed. Eg dev,staging', name: 'deployment_env']
+  ]
+)
+String[] environments = deployment_env.split(",")
 
 node('ansible') {
     ansiColor('xterm') {
